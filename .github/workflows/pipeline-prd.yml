@@ -1,17 +1,11 @@
-name: Azure Terraform TST
+name: Azure Terraform PRD
 
 on:
   workflow_call:
-    inputs:
-      client_id:
-        required: true
-        type: string
-      tenant_id:
-        required: true
-        type: string
-      subscription_id:
-        required: true
-        type: string
+
+permissions:
+  id-token: write
+  contents: read
 
 jobs:
   Plan:
