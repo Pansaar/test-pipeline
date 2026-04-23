@@ -27,7 +27,7 @@ resource "azurerm_storage_container" "functionapp" {
 data "archive_file" "function_app" {
   type        = "zip"
   source_dir  = "${path.module}/functionapp"
-  output_path = "./functionapp.zip"
+  output_path = abspath("${path.module}/functionapp.zip")
 }
 
 resource "azurerm_storage_blob" "function_app_zip" {
