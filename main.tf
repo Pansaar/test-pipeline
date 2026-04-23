@@ -27,7 +27,7 @@ resource "azurerm_storage_container" "functionapp" {
 data "archive_file" "function_app" {
   type        = "zip"
   source_dir  = "${path.module}/functionapp"
-  output_path = abspath("${path.module}/functionapp.zip")
+  output_path = "./functionapp.zip"
 }
 
 resource "azurerm_storage_blob" "function_app_zip" {
@@ -66,4 +66,8 @@ resource "azurerm_role_assignment" "function_app_blob_reader" {
   scope                = azurerm_storage_account.functionsa.id
   role_definition_name = "Storage Blob Data Reader"
   principal_id         = azurerm_windows_function_app.function_app.identity[0].principal_id
+}
+
+output "path" {
+  value = data.archive_file.function_app.output_path
 }
