@@ -1,9 +1,9 @@
 data "azurerm_resource_group" "pansaar-rg" {
-  name = "pansaar-rg"
+  name = "pansaar-rg-${var.env_code}"
 }
 
 resource "azurerm_storage_account" "functionsa" {
-  name                     = "pansaarfuncstorage"
+  name                     = "pansaarfuncstorage${var.env_code}"
   resource_group_name      = data.azurerm_resource_group.pansaar-rg.name
   location                 = data.azurerm_resource_group.pansaar-rg.location
   account_tier             = "Standard"
@@ -11,7 +11,7 @@ resource "azurerm_storage_account" "functionsa" {
 }
 
 resource "azurerm_app_service_plan" "function_plan" {
-  name                = "pansaar-func-plan"
+  name                = "pansaar-func-plan-${var.env_code}"
   location            = data.azurerm_resource_group.pansaar-rg.location
   resource_group_name = data.azurerm_resource_group.pansaar-rg.name
   kind                = "FunctionApp"
@@ -23,7 +23,7 @@ resource "azurerm_app_service_plan" "function_plan" {
 }
 
 resource "azurerm_windows_function_app" "function_app" {
-  name                       = "pansaar-func-app"
+  name                       = "pansaar-func-app-${var.env_code}"
   location                   = data.azurerm_resource_group.pansaar-rg.location
   resource_group_name        = data.azurerm_resource_group.pansaar-rg.name
   service_plan_id            = azurerm_app_service_plan.function_plan.id
