@@ -32,7 +32,7 @@ jobs:
         run: |
           terraform init \
             -backend-config="resource_group_name=pansaar-rg-tst" \
-            -backend-config="storage_account_name=pansaarfuncstoragetst" \
+            -backend-config="storage_account_name=pansaarstatestoragetst" \
             -backend-config="container_name=tfstate" \
             -backend-config="key=terraform.tfstate"
 
@@ -68,7 +68,7 @@ jobs:
         run: |
           terraform init \
             -backend-config="resource_group_name=pansaar-rg-tst" \
-            -backend-config="storage_account_name=pansaarfuncstoragetst" \
+            -backend-config="storage_account_name=pansaarstatestoragetst" \
             -backend-config="container_name=tfstate" \
             -backend-config="key=terraform.tfstate"
 
