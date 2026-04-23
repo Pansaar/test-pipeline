@@ -1,4 +1,4 @@
-name: Azure Terraform TST
+name: Azure Terraform PRD
 
 on:
   workflow_call:

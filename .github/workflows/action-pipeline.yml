@@ -16,5 +16,18 @@ permissions:
   contents: read
 
 jobs:
-  terraform:
-    uses: ./.github/workflows/pipeline-${{ github.event.inputs.environment }}.yml
+  deploy-tst:
+    if: ${{ github.event.inputs.environment == 'tst' }}
+    uses: ./.github/workflows/pipeline-tst.yml
+    with:
+      client_id:       "39d66104-5771-4b1a-8761-ff2a9df9d6ef"
+      tenant_id:       "d91ee3df-ab03-4bb1-a529-13e61ccc07f7"
+      subscription_id: "c0a74f32-1918-4f3e-a601-9eb75458f364"
+
+  deploy-prd:
+    if: ${{ github.event.inputs.environment == 'prd' }}
+    uses: ./.github/workflows/pipeline-prd.yml
+    with:
+      client_id:       "39d66104-5771-4b1a-8761-ff2a9df9d6ef"
+      tenant_id:       "d91ee3df-ab03-4bb1-a529-13e61ccc07f7"
+      subscription_id: "c0a74f32-1918-4f3e-a601-9eb75458f364"
