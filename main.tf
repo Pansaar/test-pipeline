@@ -36,7 +36,6 @@ resource "azurerm_storage_blob" "function_app_zip" {
   storage_container_name = azurerm_storage_container.functionapp.name
   type                   = "Block"
   source                 = data.archive_file.function_app.output_path
-  content_md5            = data.archive_file.function_app.output_md5
 }
 
 resource "azurerm_windows_function_app" "function_app" {
@@ -67,4 +66,8 @@ resource "azurerm_role_assignment" "function_app_blob_reader" {
   scope                = azurerm_storage_account.functionsa.id
   role_definition_name = "Storage Blob Data Reader"
   principal_id         = azurerm_windows_function_app.function_app.identity[0].principal_id
+}
+
+output "function_app_zip_path" {
+  value = data.archive_file.function_app.output_path
 }
