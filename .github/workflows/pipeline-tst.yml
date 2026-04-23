@@ -1,0 +1,74 @@
+name: Azure Terraform TST
+
+on:
+  workflow_call:
+    inputs:
+      client_id:
+        required: true
+        type: string
+      tenant_id:
+        required: true
+        type: string
+      subscription_id:
+        required: true
+        type: string
+
+jobs:
+  Plan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Login to Azure via OIDC
+        uses: azure/login@v2
+        with:
+          client-id:       "39d66104-5771-4b1a-8761-ff2a9df9d6ef"
+          tenant-id:       "d91ee3df-ab03-4bb1-a529-13e61ccc07f7"
+          subscription-id: "c0a74f32-1918-4f3e-a601-9eb75458f364"
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Plan
+        run: terraform plan -out=tfplan
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: tfplan
+          path: tfplan
+
+  Apply:
+    needs: Plan
+    runs-on: ubuntu-latest
+    environment: test
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Login to Azure via OIDC
+        uses: azure/login@v2
+        with:
+          client-id:       "39d66104-5771-4b1a-8761-ff2a9df9d6ef"
+          tenant-id:       "d91ee3df-ab03-4bb1-a529-13e61ccc07f7"
+          subscription-id: "c0a74f32-1918-4f3e-a601-9eb75458f364"
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Download Plan Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: tfplan
+
+      - name: Terraform Apply
+        run: terraform apply -auto-approve tfplan
