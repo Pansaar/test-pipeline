@@ -31,15 +31,11 @@ jobs:
       - name: Terraform Plan
         run: terraform plan -out=tfplan
 
-      - name: Upload Plan and Terraform Directory
+      - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: tfplan
-          path: |
-            tfplan
-            .terraform
-            .terraform.lock.hcl
-            *.tf
+          path: tfplan
 
   Apply:
     needs: Plan
@@ -47,6 +43,9 @@ jobs:
     environment: test
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
       - name: Login to Azure via OIDC
         uses: azure/login@v2
         with:
@@ -56,6 +55,9 @@ jobs:
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Init
+        run: terraform init
 
       - name: Download Plan Artifact
         uses: actions/download-artifact@v4
