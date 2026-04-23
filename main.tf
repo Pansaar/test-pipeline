@@ -36,6 +36,8 @@ resource "azurerm_storage_blob" "function_app_zip" {
   storage_container_name = azurerm_storage_container.functionapp.name
   type                   = "Block"
   source                 = data.archive_file.function_app.output_path
+
+  depends_on = [data.archive_file.function_app]
 }
 
 resource "azurerm_windows_function_app" "function_app" {
