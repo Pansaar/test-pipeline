@@ -18,7 +18,7 @@ jobs:
       - name: Login to Azure via OIDC
         uses: azure/login@v2
         with:
-          client-id:       "1c43011f-40e9-45a2-9bf3-d5e0070251d4"
+          client-id:       "39d66104-5771-4b1a-8761-ff2a9df9d6ef"
           tenant-id:       "d91ee3df-ab03-4bb1-a529-13e61ccc07f7"
           subscription-id: "c0a74f32-1918-4f3e-a601-9eb75458f364"
 
@@ -29,7 +29,12 @@ jobs:
         run: cp ./prd/values.auto.tfvars ./values.auto.tfvars
 
       - name: Terraform Init
-        run: terraform init
+        run: |
+          terraform init \
+            -backend-config="resource_group_name=pansaar-rg-prd" \
+            -backend-config="storage_account_name=pansaarfuncstorageprd" \
+            -backend-config="container_name=tfstate" \
+            -backend-config="key=terraform.tfstate"
 
       - name: Terraform Plan
         run: terraform plan -out=tfplan
@@ -60,7 +65,8 @@ jobs:
         uses: hashicorp/setup-terraform@v3
 
       - name: Terraform Init
-        run: terraform init \
+        run: |
+          terraform init \
             -backend-config="resource_group_name=pansaar-rg-prd" \
             -backend-config="storage_account_name=pansaarfuncstorageprd" \
             -backend-config="container_name=tfstate" \

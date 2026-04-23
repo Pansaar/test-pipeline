@@ -29,7 +29,8 @@ jobs:
         run: cp ./tst/values.auto.tfvars ./values.auto.tfvars
 
       - name: Terraform Init
-        run: terraform init \
+        run: |
+          terraform init \
             -backend-config="resource_group_name=pansaar-rg-tst" \
             -backend-config="storage_account_name=pansaarfuncstoragetst" \
             -backend-config="container_name=tfstate" \
@@ -64,7 +65,12 @@ jobs:
         uses: hashicorp/setup-terraform@v3
 
       - name: Terraform Init
-        run: terraform init
+        run: |
+          terraform init \
+            -backend-config="resource_group_name=pansaar-rg-tst" \
+            -backend-config="storage_account_name=pansaarfuncstoragetst" \
+            -backend-config="container_name=tfstate" \
+            -backend-config="key=terraform.tfstate"
 
       - name: Download Plan Artifact
         uses: actions/download-artifact@v4
