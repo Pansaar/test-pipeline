@@ -24,9 +24,9 @@ jobs:
       - name: Login to Azure via OIDC
         uses: azure/login@v2
         with:
-          client-id:       ${{ inputs.client_id }}
-          tenant-id:       ${{ inputs.tenant_id }}
-          subscription-id: ${{ inputs.subscription_id }}
+          client_id:       "39d66104-5771-4b1a-8761-ff2a9df9d6ef"
+          tenant_id:       "d91ee3df-ab03-4bb1-a529-13e61ccc07f7"
+          subscription_id: "c0a74f32-1918-4f3e-a601-9eb75458f364"
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
@@ -55,9 +55,9 @@ jobs:
       - name: Login to Azure via OIDC
         uses: azure/login@v2
         with:
-          client-id:       ${{ inputs.client_id }}
-          tenant-id:       ${{ inputs.tenant_id }}
-          subscription-id: ${{ inputs.subscription_id }}
+          client_id:       "39d66104-5771-4b1a-8761-ff2a9df9d6ef"
+          tenant_id:       "d91ee3df-ab03-4bb1-a529-13e61ccc07f7"
+          subscription_id: "c0a74f32-1918-4f3e-a601-9eb75458f364"
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
