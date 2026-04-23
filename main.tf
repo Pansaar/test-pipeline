@@ -30,6 +30,10 @@ resource "azurerm_windows_function_app" "function_app" {
   storage_account_name       = azurerm_storage_account.functionsa.name
   storage_account_access_key = azurerm_storage_account.functionsa.primary_access_key
 
+  identity {
+    type = "SystemAssigned"
+  }
+
   site_config {
     application_stack {
       powershell_core_version = "7.2"
