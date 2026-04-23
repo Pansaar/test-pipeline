@@ -60,7 +60,11 @@ jobs:
         uses: hashicorp/setup-terraform@v3
 
       - name: Terraform Init
-        run: terraform init
+        run: terraform init \
+            -backend-config="resource_group_name=pansaar-rg-prd" \
+            -backend-config="storage_account_name=pansaarfuncstorageprd" \
+            -backend-config="container_name=tfstate" \
+            -backend-config="key=terraform.tfstate"
 
       - name: Download Plan Artifact
         uses: actions/download-artifact@v4
