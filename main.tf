@@ -38,6 +38,32 @@ resource "azurerm_windows_function_app" "function_app" {
 
   app_settings = {
     FUNCTIONS_WORKER_RUNTIME = "powershell"
-    WEBSITE_RUN_FROM_PACKAGE = "1"
+    WEBSITE_RUN_FROM_PACKAGE = "https://${azurerm_storage_account.functionsa.name}.blob.core.windows.net/${azurerm_storage_container.functionapp.name}/${azurerm_storage_blob.function_app_zip.name}"
   }
+}
+
+resource "azurerm_storage_container" "functionapp" {
+  name                  = "functionapp"
+  storage_account_name  = azurerm_storage_account.functionsa.name
+  container_access_type = "private"
+}
+
+data "archive_file" "function_app" {
+  type        = "zip"
+  source_dir  = "${path.module}/functionapp"
+  output_path = "${path.module}/functionapp.zip"
+}
+
+resource "azurerm_storage_blob" "function_app_zip" {
+  name                   = "functionapp.zip"
+  storage_account_name   = azurerm_storage_account.functionsa.name
+  storage_container_name = azurerm_storage_container.functionapp.name
+  type                   = "Block"
+  source                 = "${path.module}/functionapp.zip"
+}
+
+resource "azurerm_role_assignment" "function_app_blob_reader" {
+  scope                = azurerm_storage_account.functionsa.id
+  role_definition_name = "Storage Blob Data Reader"
+  principal_id         = azurerm_windows_function_app.function_app.identity[0].principal_id
 }
