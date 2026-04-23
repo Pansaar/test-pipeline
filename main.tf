@@ -1,6 +1,5 @@
 data "azurerm_resource_group" "pansaar-rg" {
   name     = "pansaar-rg"
-  location = "East Asia"
 }
 
 resource "azurerm_storage_account" "functionsa" {
