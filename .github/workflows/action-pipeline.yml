@@ -3,6 +3,13 @@ name: Deploy Azure Infrastructure
 on:
   workflow_dispatch:
     inputs:
+      action:
+        description: "Select action"
+        required: true
+        type: choice
+        options:
+          - plan
+          - apply
       environment:
         description: "Select environment"
         required: true
@@ -19,7 +26,11 @@ jobs:
   deploy-tst:
     if: github.event.inputs.environment == 'tst'
     uses: ./.github/workflows/pipeline-tst.yml
+    with:
+      action: ${{ github.event.inputs.action }}
 
   deploy-prd:
     if: github.event.inputs.environment == 'prd'
     uses: ./.github/workflows/pipeline-prd.yml
+    with:
+      action: ${{ github.event.inputs.action }}

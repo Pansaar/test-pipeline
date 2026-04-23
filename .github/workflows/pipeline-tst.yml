@@ -2,6 +2,10 @@ name: Azure Terraform TST
 
 on:
   workflow_call:
+    inputs:
+      action:
+        required: true
+        type: string
 
 permissions:
   id-token: write
@@ -46,6 +50,7 @@ jobs:
           path: tfplan
 
   Apply:
+    if: inputs.action == 'apply'
     needs: Plan
     runs-on: ubuntu-latest
     environment: tst
@@ -63,6 +68,9 @@ jobs:
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
+
+      - name: Copy tfvars (TST)
+        run: cp ./tst/values.auto.tfvars ./values.auto.tfvars
 
       - name: Terraform Init
         run: |
