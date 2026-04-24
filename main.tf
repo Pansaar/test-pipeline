@@ -48,6 +48,12 @@ resource "azurerm_windows_function_app" "function_app" {
   storage_account_name       = azurerm_storage_account.functionsa.name
   storage_account_access_key = azurerm_storage_account.functionsa.primary_access_key
 
+  depends_on = [                              
+    azurerm_storage_account.functionsa,
+    azurerm_storage_blob.function_app_zip
+    # azurerm_storage_container.functionapp,
+  ]
+
   identity {
     type = "SystemAssigned"
   }
